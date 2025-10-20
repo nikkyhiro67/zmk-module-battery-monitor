@@ -1,0 +1,6 @@
+name: zmk-feature-non-lipo-battery-management
+build:
+  cmake: .
+  kconfig: Kconfig
+  settings:
+    dts_root: .
