@@ -3,9 +3,15 @@ menu "Battery Monitor Module"
 config ZMK_BATTERY_MONITOR
     bool "Enable Battery Monitor Module"
     default y
+    help
+      Enable the battery_monitor module that reads battery voltage
+      from the compatible device tree node (compatible = "zmk,battery-monitor")
+      and exposes simple APIs to other modules.
 
-config ZMK_BATTERY_MONITOR_DEBUG
-    bool "Enable debug logs for Battery Monitor"
-    default n
+config ZMK_BATTERY_MONITOR_LOG_LEVEL
+    int "Log level for battery_monitor"
+    default 3
+    help
+      Set logging level for the battery_monitor module (higher means more logs).
 
 endmenu
