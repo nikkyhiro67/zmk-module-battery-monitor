@@ -1,5 +1,5 @@
-if(CONFIG_ZMK_NON_LIPO_BATTERY_MANAGEMENT)
+if(CONFIG_ZMK_BATTERY_MONITOR)
     zephyr_library()
-    zephyr_library_sources(src/non_lipo_battery_management.c)
+    zephyr_library_sources(src/battery_monitor.c)
     zephyr_library_include_directories(${CMAKE_SOURCE_DIR}/include)
 endif()

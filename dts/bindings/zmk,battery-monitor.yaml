@@ -1,0 +1,11 @@
+description: ZMK Battery Monitoring device
+
+compatible: "zmk,battery-monitor"
+
+include: base.yaml
+
+properties:
+  io-channels:
+    required: true
+    description: |
+      ADC channel for battery voltage measurement.
