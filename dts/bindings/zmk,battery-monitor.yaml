@@ -9,3 +9,29 @@ properties:
     required: true
     description: |
       ADC channel for battery voltage measurement.
+
+  power-gpios:
+    type: phandle-array
+    required: false
+    description: |
+      GPIO used to enable power to the voltage divider circuit.
+      Optional. If not provided, the divider is assumed to be always powered.
+
+  full-mv:
+    type: int
+    required: false
+    default: 4200
+    description: |
+      Voltage in millivolts considered as 100% battery.
+
+  empty-mv:
+    type: int
+    required: false
+    default: 3300
+    description: |
+      Voltage in millivolts considered as 0% battery.
+
+  status:
+    type: string
+    required: false
+    description: Node operational status.
