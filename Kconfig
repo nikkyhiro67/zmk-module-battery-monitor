@@ -3,14 +3,20 @@ menu "Battery Monitor Module"
 config ZMK_BATTERY_MONITOR
     bool "Enable Battery Monitor Module"
     default y
+    depends on ZMK
     help
-      Enables battery voltage and charge monitoring support.
+      Enable the ZMK Battery Monitor module.
 
-config NON_LIPO_BATTERY_MANAGEMENT
-    bool "Use external non-lipo battery management API"
-    default n
+      This module integrates battery state reporting into ZMK.
+      It does NOT perform voltage measurement directly, but retrieves
+      data from an external Non-LiPo Battery Management module
+      (e.g. sekigon-gonnoc/zmk-feature-non-lipo-battery-management).
+
+config ZMK_BATTERY_MONITOR_PERIOD
+    int "Battery monitor update interval (seconds)"
+    default 30
+    depends on ZMK_BATTERY_MONITOR
     help
-      Use the external non-lipo-battery-management module API
-      instead of internal ADC measurement.
+      How often to update battery state (forwarded from external manager).
 
 endmenu

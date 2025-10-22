@@ -1,28 +1,31 @@
-/* include/battery_monitor.h */
-#ifndef ZMK_MODULE_BATTERY_MONITOR_H_
-#define ZMK_MODULE_BATTERY_MONITOR_H_
+#pragma once
 
-#include <stdbool.h>
-#include <stdint.h>
+#include <zephyr/kernel.h>
+#include <zephyr/device.h>
+
+/**
+ * @file led_indicator.h
+ * @brief Interface for ZMK LED Indicator module
+ */
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-/** Update internal reading from hardware (force read). */
-void battery_monitor_update(void);
+/**
+ * @brief Initialize LED indicator manually (optional)
+ *
+ * Normally initialized automatically at boot by SYS_INIT().
+ */
+int led_indicator_init(void);
 
-/** Get last cached battery percentage (0-100). */
-uint8_t battery_monitor_get_level(void);
-
-/** Get last cached battery voltage in mV (or 0 if unknown). */
-int battery_monitor_get_voltage_mv(void);
-
-/** Return true if battery is considered low. */
-bool battery_monitor_is_low(void);
+/**
+ * @brief Update LED indicator manually (optional)
+ *
+ * Can be used to force refresh after custom state changes.
+ */
+void led_indicator_update(void);
 
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* ZMK_MODULE_BATTERY_MONITOR_H_ */
