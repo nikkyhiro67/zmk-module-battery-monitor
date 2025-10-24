@@ -1,4 +1,4 @@
-description: ZMK Battery Monitor module
+description: ZMK Battery Monitor device
 
 compatible: "zmk,battery-monitor"
 
@@ -12,9 +12,20 @@ properties:
       Reference to the battery management device (e.g. non-lipo manager).
       Used to retrieve voltage and charge state.
 
+  full-mv:
+    type: int
+    required: false
+    description: |
+      Optional full-scale voltage in millivolts (for user info).
+
+  empty-mv:
+    type: int
+    required: false
+    description: |
+      Optional empty voltage in millivolts (for user info).
+
   status:
     type: string
     required: false
     description: |
       Standard Zephyr device status property.
-      Typically "okay" to enable the node.
