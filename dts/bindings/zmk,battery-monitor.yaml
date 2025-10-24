@@ -1,24 +1,20 @@
-description: ZMK LED Indicator module
+description: ZMK Battery Monitor module
 
-compatible: "zmk,led-indicator"
+compatible: "zmk,battery-monitor"
 
 include: base.yaml
 
 properties:
-  led-strip:
+  manager:
     type: phandle
     required: true
     description: |
-      LED strip device (WS2812, SK6812, etc.)
+      Reference to the battery management device (e.g. non-lipo manager).
+      Used to retrieve voltage and charge state.
 
-  battery:
-    type: phandle
+  status:
+    type: string
     required: false
     description: |
-      Optional reference to battery monitor device node.
-
-  power-gpios:
-    type: phandle-array
-    required: false
-    description: |
-      Optional GPIOs for power or indicator control.
+      Standard Zephyr device status property.
+      Typically "okay" to enable the node.
