@@ -12,18 +12,39 @@
 #include <zephyr/device.h>
 #include <zmk/event_manager.h>
 #include <zmk/events/battery_state_changed.h>
+#include <zephyr/devicetree.h>
 
 LOG_MODULE_REGISTER(battery_monitor, CONFIG_ZMK_LOG_LEVEL);
+
+/* -----------------------------------------------------
+ * バッテリデバイス参照の切り替え（左右独立対応）
+ * ----------------------------------------------------- */
+#if IS_ENABLED(CONFIG_CLICHE_AIR_LEFT)
+#define BATTERY_NODE DT_NODELABEL(non_lipo_battery_left)
+#elif IS_ENABLED(CONFIG_CLICHE_AIR_RIGHT)
+#define BATTERY_NODE DT_NODELABEL(non_lipo_battery_right)
+#else
+#define BATTERY_NODE DT_NODELABEL(non_lipo_battery)
+#endif
+
+static const struct device *battery_dev = DEVICE_DT_GET_OR_NULL(BATTERY_NODE);
 
 /* 外部バッテリ管理API */
 extern int non_lipo_battery_get_soc(void);
 
-/* バッテリ監視スレッド */
+/* -----------------------------------------------------
+ * バッテリ監視スレッド本体
+ * ----------------------------------------------------- */
 static void battery_monitor_thread(void)
 {
     int prev_soc = -1;
 
     LOG_INF("Battery monitor thread started");
+
+    if (!device_is_ready(battery_dev)) {
+        LOG_ERR("Battery device not ready!");
+        return;
+    }
 
     while (1) {
         int soc = non_lipo_battery_get_soc();
@@ -46,15 +67,25 @@ static void battery_monitor_thread(void)
     }
 }
 
-/* スレッド定義 */
+/* -----------------------------------------------------
+ * スレッド定義
+ * ----------------------------------------------------- */
 K_THREAD_DEFINE(battery_monitor_task,
                 CONFIG_ZMK_BATTERY_MONITOR_STACK_SIZE,
                 battery_monitor_thread, NULL, NULL, NULL,
                 5, 0, 0);
 
-/* 初期化関数 */
+/* -----------------------------------------------------
+ * 初期化関数
+ * ----------------------------------------------------- */
 int battery_monitor_init(void)
 {
     LOG_INF("Battery Monitor initialized (ZMK event linked)");
+
+    if (!device_is_ready(battery_dev)) {
+        LOG_ERR("Battery device not ready during init!");
+        return -ENODEV;
+    }
+
     return 0;
 }
